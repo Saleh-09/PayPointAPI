@@ -37,6 +37,23 @@ namespace PayPointAPi.DataAccess.Migrations
                     b.HasKey("CategoryId");
 
                     b.ToTable("Categories");
+
+                    b.HasData(
+                        new
+                        {
+                            CategoryId = 1,
+                            CategoryName = "Beverages"
+                        },
+                        new
+                        {
+                            CategoryId = 2,
+                            CategoryName = "Snacks"
+                        },
+                        new
+                        {
+                            CategoryId = 3,
+                            CategoryName = "Household"
+                        });
                 });
 
             modelBuilder.Entity("PayPointAPI.Models.Models.Employee", b =>
@@ -94,11 +111,51 @@ namespace PayPointAPi.DataAccess.Migrations
                     b.Property<int>("StockQuantity")
                         .HasColumnType("int");
 
+                    b.Property<int>("StoreId")
+                        .HasColumnType("int");
+
                     b.HasKey("ProductId");
 
                     b.HasIndex("CategoryId");
 
+                    b.HasIndex("StoreId");
+
                     b.ToTable("Products");
+
+                    b.HasData(
+                        new
+                        {
+                            ProductId = 1,
+                            CategoryId = 1,
+                            ExpiryDate = new DateOnly(2025, 12, 31),
+                            Price = 250,
+                            ProductDescription = "Freshly squeezed orange juice.",
+                            ProductName = "Orange Juice",
+                            StockQuantity = 100,
+                            StoreId = 1
+                        },
+                        new
+                        {
+                            ProductId = 2,
+                            CategoryId = 2,
+                            ExpiryDate = new DateOnly(2025, 10, 15),
+                            Price = 100,
+                            ProductDescription = "Crispy salted potato chips.",
+                            ProductName = "Potato Chips",
+                            StockQuantity = 200,
+                            StoreId = 2
+                        },
+                        new
+                        {
+                            ProductId = 3,
+                            CategoryId = 3,
+                            ExpiryDate = new DateOnly(2027, 1, 1),
+                            Price = 300,
+                            ProductDescription = "Lemon-scented dishwashing liquid.",
+                            ProductName = "Dishwashing Liquid",
+                            StockQuantity = 80,
+                            StoreId = 3
+                        });
                 });
 
             modelBuilder.Entity("PayPointAPI.Models.Models.Store", b =>
@@ -120,6 +177,26 @@ namespace PayPointAPi.DataAccess.Migrations
                     b.HasKey("StoreId");
 
                     b.ToTable("Stores");
+
+                    b.HasData(
+                        new
+                        {
+                            StoreId = 1,
+                            Location = "Main Street, Karachi",
+                            StoreName = "Main Street Supermart"
+                        },
+                        new
+                        {
+                            StoreId = 2,
+                            Location = "Sector G-11, Islamabad",
+                            StoreName = "Green Valley Market"
+                        },
+                        new
+                        {
+                            StoreId = 3,
+                            Location = "Gulberg III, Lahore",
+                            StoreName = "Daily Essentials"
+                        });
                 });
 
             modelBuilder.Entity("PayPointAPI.Models.Models.Product", b =>
@@ -130,10 +207,23 @@ namespace PayPointAPi.DataAccess.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("PayPointAPI.Models.Models.Store", "Store")
+                        .WithMany("Products")
+                        .HasForeignKey("StoreId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Category");
+
+                    b.Navigation("Store");
                 });
 
             modelBuilder.Entity("PayPointAPI.Models.Models.Category", b =>
+                {
+                    b.Navigation("Products");
+                });
+
+            modelBuilder.Entity("PayPointAPI.Models.Models.Store", b =>
                 {
                     b.Navigation("Products");
                 });

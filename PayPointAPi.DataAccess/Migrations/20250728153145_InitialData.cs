@@ -3,10 +3,12 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace PayPointAPi.DataAccess.Migrations
 {
     /// <inheritdoc />
-    public partial class initial : Migration
+    public partial class InitialData : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -65,7 +67,8 @@ namespace PayPointAPi.DataAccess.Migrations
                     Price = table.Column<int>(type: "int", nullable: false),
                     StockQuantity = table.Column<int>(type: "int", nullable: false),
                     ExpiryDate = table.Column<DateOnly>(type: "date", nullable: false),
-                    CategoryId = table.Column<int>(type: "int", nullable: false)
+                    CategoryId = table.Column<int>(type: "int", nullable: false),
+                    StoreId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -76,12 +79,53 @@ namespace PayPointAPi.DataAccess.Migrations
                         principalTable: "Categories",
                         principalColumn: "CategoryId",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Products_Stores_StoreId",
+                        column: x => x.StoreId,
+                        principalTable: "Stores",
+                        principalColumn: "StoreId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.InsertData(
+                table: "Categories",
+                columns: new[] { "CategoryId", "CategoryName" },
+                values: new object[,]
+                {
+                    { 1, "Beverages" },
+                    { 2, "Snacks" },
+                    { 3, "Household" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Stores",
+                columns: new[] { "StoreId", "Location", "StoreName" },
+                values: new object[,]
+                {
+                    { 1, "Main Street, Karachi", "Main Street Supermart" },
+                    { 2, "Sector G-11, Islamabad", "Green Valley Market" },
+                    { 3, "Gulberg III, Lahore", "Daily Essentials" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Products",
+                columns: new[] { "ProductId", "CategoryId", "ExpiryDate", "Price", "ProductDescription", "ProductName", "StockQuantity", "StoreId" },
+                values: new object[,]
+                {
+                    { 1, 1, new DateOnly(2025, 12, 31), 250, "Freshly squeezed orange juice.", "Orange Juice", 100, 1 },
+                    { 2, 2, new DateOnly(2025, 10, 15), 100, "Crispy salted potato chips.", "Potato Chips", 200, 2 },
+                    { 3, 3, new DateOnly(2027, 1, 1), 300, "Lemon-scented dishwashing liquid.", "Dishwashing Liquid", 80, 3 }
                 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Products_CategoryId",
                 table: "Products",
                 column: "CategoryId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Products_StoreId",
+                table: "Products",
+                column: "StoreId");
         }
 
         /// <inheritdoc />
@@ -94,10 +138,10 @@ namespace PayPointAPi.DataAccess.Migrations
                 name: "Products");
 
             migrationBuilder.DropTable(
-                name: "Stores");
+                name: "Categories");
 
             migrationBuilder.DropTable(
-                name: "Categories");
+                name: "Stores");
         }
     }
 }

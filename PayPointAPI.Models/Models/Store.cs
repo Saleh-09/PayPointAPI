@@ -11,5 +11,6 @@ namespace PayPointAPI.Models.Models
         public int StoreId { get; set; }
         public string StoreName { get; set; }
         public string Location { get; set; }
+        public ICollection<Product> Products { get; set; } = new List<Product>();
     }
 }
