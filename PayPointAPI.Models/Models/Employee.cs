@@ -14,5 +14,7 @@ namespace PayPointAPI.Models.Models
         public double EmployeeStore { get; set; }
         public double EmployeePhone { get; set; }
 
+        public int StoreId { get; set; }
+        public Store Store { get; set; }= default!;
     }
 }

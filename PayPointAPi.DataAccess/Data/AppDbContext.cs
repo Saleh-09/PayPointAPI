@@ -43,7 +43,7 @@ namespace PayPointAPi.DataAccess.Data
                     StockQuantity = 100,
                     ExpiryDate = new DateOnly(2025, 12, 31),
                     CategoryId = 1,
-                    StoreId = 1 
+                    StoreId = 1
                 },
                 new Product
                 {
@@ -54,7 +54,7 @@ namespace PayPointAPi.DataAccess.Data
                     StockQuantity = 200,
                     ExpiryDate = new DateOnly(2025, 10, 15),
                     CategoryId = 2,
-                    StoreId = 2 
+                    StoreId = 2
                 },
                 new Product
                 {
@@ -65,9 +65,35 @@ namespace PayPointAPi.DataAccess.Data
                     StockQuantity = 80,
                     ExpiryDate = new DateOnly(2027, 01, 01),
                     CategoryId = 3,
-                    StoreId = 3 
+                    StoreId = 3
                 }
             );
+            modelBuilder.Entity<Employee>().HasData(
+               new Employee
+               {
+                   EmployeeId = 1,
+                   EmployeeName = "Ali Khan",
+                   EmployeeEmail = "ali@example.com",
+                   EmployeePhone = 03001234567,
+                   StoreId = 1
+               },
+               new Employee
+               {
+                   EmployeeId = 2,
+                   EmployeeName = "Sara Ahmed",
+                   EmployeeEmail = "sara@example.com",
+                   EmployeePhone = 03129876543,
+                   StoreId = 2
+               },
+               new Employee
+               {
+                   EmployeeId = 3,
+                   EmployeeName = "Bilal Sheikh",
+                   EmployeeEmail = "bilal@example.com",
+                   EmployeePhone = 03331234567,
+                   StoreId = 3
+               }
+           );
         }
     }
 }
